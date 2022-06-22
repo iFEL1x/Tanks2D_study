@@ -1,0 +1,37 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RangeTank : ShootableTank
+{
+    [SerializeField] private float _distanceToPlayer = 5f;
+    private float _timer;
+    private Transform _target;
+
+    protected override void Start()
+    {
+        base.Start();
+        _target = Player.Instance.transform;
+    }
+
+
+    private void Update()
+    {
+        SetAngle(_target.position);
+
+        if (Vector2.Distance(transform.position, _target.position) > _distanceToPlayer)
+        {
+            Move();
+        }
+
+        if(_timer <= 0)
+        {
+            Shoot();
+            _timer = _reloadTime;
+        }
+        else
+        {
+            _timer -= Time.deltaTime;
+        }
+    }
+}
